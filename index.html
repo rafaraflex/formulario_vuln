@@ -186,11 +186,11 @@
             <div class="form-group">
                 <label for="cve" class="required">CVE (Clave Única)</label>
                 <input type="text" id="cve" name="cve" required 
-                       placeholder="Ingresa la CVE correspondiente"
-                       pattern="[A-Za-z0-9\-_]{3,20}"
-                       title="La CVE debe contener letras, números, guiones o guiones bajos (3-20 caracteres)">
+                       placeholder="Ejemplo: CVE-1990-34569"
+                       pattern="[A-Za-z]{3}-[0-9]{4}-[0-9]{3,6}"
+                       title="Formato: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)">
                 <div class="field-error" id="cveError">
-                    La CVE debe contener letras, números, guiones o guiones bajos (3-20 caracteres)
+                    El formato debe ser: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)
                 </div>
             </div>
             
