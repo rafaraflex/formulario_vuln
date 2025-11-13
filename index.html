@@ -149,6 +149,20 @@
             content: " *";
             color: #dc2626;
         }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e1e5e9;
+        }
     </style>
 </head>
 <body>
@@ -158,65 +172,99 @@
         </h1>
         
         <form id="automationForm">
-            <!-- Campo Nombre -->
-            <div class="form-group">
-                <label for="nombre" class="required">Nombre del solicitante</label>
-                <input type="text" id="nombre" name="nombre" required 
-                       placeholder="Ingresa tu nombre completo"
-                       pattern="[A-Za-zÁáÉéÍíÓóÚúÑñ\s]{2,50}"
-                       title="El nombre debe contener solo letras y espacios (2-50 caracteres)">
-                <div class="field-error" id="nombreError">
-                    Por favor ingresa un nombre válido (solo letras y espacios)
+            <!-- Sección Información del Solicitante -->
+            <div class="form-section">
+                <div class="section-title">📋 Información del Solicitante</div>
+                
+                <!-- Campo Nombre -->
+                <div class="form-group">
+                    <label for="nombre" class="required">Nombre del solicitante</label>
+                    <input type="text" id="nombre" name="nombre" required 
+                           placeholder="Ingresa tu nombre completo"
+                           pattern="[A-Za-zÁáÉéÍíÓóÚúÑñ\s]{2,50}"
+                           title="El nombre debe contener solo letras y espacios (2-50 caracteres)">
+                    <div class="field-error" id="nombreError">
+                        Por favor ingresa un nombre válido (solo letras y espacios)
+                    </div>
+                </div>
+                
+                <!-- Campo Correo Electrónico -->
+                <div class="form-group">
+                    <label for="email" class="required">Correo electrónico</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="ejemplo@corporacion.com"
+                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                           title="Por favor ingresa un correo electrónico válido">
+                    <div class="field-error" id="emailError">
+                        Por favor ingresa un correo electrónico válido
+                    </div>
+                </div>
+                
+                <!-- Campo CVE -->
+                <div class="form-group">
+                    <label for="cve" class="required">CVE (Clave Única)</label>
+                    <input type="text" id="cve" name="cve" required 
+                           placeholder="Ejemplo: CVE-1990-34569"
+                           pattern="[A-Za-z]{3}-[0-9]{4}-[0-9]{3,6}"
+                           title="Formato: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)">
+                    <div class="field-error" id="cveError">
+                        El formato debe ser: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)
+                    </div>
                 </div>
             </div>
-            
-            <!-- Campo Correo Electrónico -->
-            <div class="form-group">
-                <label for="email" class="required">Correo electrónico</label>
-                <input type="email" id="email" name="email" required 
-                       placeholder="ejemplo@corporacion.com"
-                       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                       title="Por favor ingresa un correo electrónico válido">
-                <div class="field-error" id="emailError">
-                    Por favor ingresa un correo electrónico válido
-                </div>
-            </div>
-            
-            <!-- Campo CVE -->
-            <div class="form-group">
-                <label for="cve" class="required">CVE (Clave Única)</label>
-                <input type="text" id="cve" name="cve" required 
-                       placeholder="Ejemplo: CVE-1990-34569"
-                       pattern="[A-Za-z]{3}-[0-9]{4}-[0-9]{3,6}"
-                       title="Formato: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)">
-                <div class="field-error" id="cveError">
-                    El formato debe ser: 3 letras + 4 dígitos + 3-6 dígitos (ejemplo: CVE-1990-34569)
-                </div>
-            </div>
-            
-            <!-- Opciones de Automatización -->
-            <div class="form-group">
-                <label class="required">Selecciona las opciones de automatización</label>
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="dep_option" value="Ansible" id="ansible">
-                        <label for="ansible">🔄 Ansible</label>
+
+            <!-- Sección Configuración de Automatización -->
+            <div class="form-section">
+                <div class="section-title">⚙️ Configuración de Automatización</div>
+                
+                <!-- Opciones de Automatización -->
+                <div class="form-group">
+                    <label class="required">Selecciona las opciones de automatización</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="dep_option" value="Ansible" id="ansible">
+                            <label for="ansible">🔄 Ansible</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="dep_option" value="Packer" id="packer">
+                            <label for="packer">📦 Packer</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="dep_option" value="manual" id="manual">
+                            <label for="manual">👨‍💼 Manual</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="dep_option" value="Ansible Automation Platform" id="aap">
+                            <label for="aap">🏢 Ansible Automation Platform</label>
+                        </div>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="dep_option" value="Packer" id="packer">
-                        <label for="packer">📦 Packer</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="dep_option" value="manual" id="manual">
-                        <label for="manual">👨‍💼 Manual</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" name="dep_option" value="Ansible Automation Platform" id="aap">
-                        <label for="aap">🏢 Ansible Automation Platform</label>
+                    <div class="field-error" id="depOptionError">
+                        Por favor selecciona al menos una opción de automatización
                     </div>
                 </div>
-                <div class="field-error" id="depOptionError">
-                    Por favor selecciona al menos una opción de automatización
+
+                <!-- Campo Nombre del Archivo Destino -->
+                <div class="form-group">
+                    <label for="target_iac_file" class="required">Nombre del Archivo Destino (Target_IaC_File)</label>
+                    <input type="text" id="target_iac_file" name="target_iac_file" required 
+                           placeholder="Ejemplo: infrastructure.yml, deployment.zip, setup.tf"
+                           pattern="[A-Za-z0-9_\-\.]+\.(yml|yaml|json|tf|zip|tar\.gz)"
+                           title="Ingresa un nombre de archivo válido con extensión (yml, yaml, json, tf, zip, tar.gz)">
+                    <div class="field-error" id="targetIaCFileError">
+                        Por favor ingresa un nombre de archivo válido con extensión (yml, yaml, json, tf, zip, tar.gz)
+                    </div>
+                </div>
+
+                <!-- Campo URL del Repositorio Nexus -->
+                <div class="form-group">
+                    <label for="nexus_url" class="required">URL del Repositorio Nexus (Nexus_URL)</label>
+                    <input type="url" id="nexus_url" name="nexus_url" required 
+                           placeholder="Ejemplo: https://nexus.corporacion.com/repository/ansible-collections/"
+                           pattern="https?://.+\..+"
+                           title="Ingresa una URL válida para el repositorio Nexus">
+                    <div class="field-error" id="nexusUrlError">
+                        Por favor ingresa una URL válida para el repositorio Nexus
+                    </div>
                 </div>
             </div>
             
@@ -269,6 +317,8 @@
                 email: formData.get('email').trim(),
                 cve: formData.get('cve').trim(),
                 dep_option: selectedOptions,
+                Target_IaC_File: formData.get('target_iac_file').trim(),
+                Nexus_URL: formData.get('nexus_url').trim(),
                 timestamp: new Date().toISOString(),
                 fuente: 'formulario_automatizacion',
                 url_origen: window.location.href
@@ -349,6 +399,26 @@
                 isValid = false;
             } else {
                 depOptionError.style.display = 'none';
+            }
+
+            // Validar Target_IaC_File
+            const targetIaCFile = document.getElementById('target_iac_file');
+            const targetIaCFileError = document.getElementById('targetIaCFileError');
+            if (!targetIaCFile.checkValidity()) {
+                targetIaCFileError.style.display = 'block';
+                isValid = false;
+            } else {
+                targetIaCFileError.style.display = 'none';
+            }
+
+            // Validar Nexus_URL
+            const nexusUrl = document.getElementById('nexus_url');
+            const nexusUrlError = document.getElementById('nexusUrlError');
+            if (!nexusUrl.checkValidity()) {
+                nexusUrlError.style.display = 'block';
+                isValid = false;
+            } else {
+                nexusUrlError.style.display = 'none';
             }
             
             return isValid;
