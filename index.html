@@ -65,6 +65,11 @@
             width: 100%;
         }
         
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
         .required::after {
             content: " *";
             color: red;
@@ -75,6 +80,15 @@
             font-size: 14px;
             margin-top: 5px;
             display: none;
+        }
+        
+        .debug-info {
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -165,15 +179,32 @@
         <div id="errorMessage" style="display: none; background: #fee2e2; color: #dc2626; padding: 15px; border-radius: 5px; margin-top: 15px; text-align: center;">
             <p>Error al enviar el formulario. Intenta nuevamente.</p>
         </div>
+        
+        <!-- Área de debug -->
+        <div class="debug-info">
+            <strong>Información de Debug:</strong>
+            <div id="debugOutput"></div>
+        </div>
     </div>
 
     <script>
+        function debugLog(message) {
+            const debugOutput = document.getElementById('debugOutput');
+            debugOutput.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+            console.log(message);
+        }
+
         document.getElementById('automationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            debugLog("🔔 EVENTO SUBMIT CAPTURADO");
+            
             if (!validateForm()) {
+                debugLog("❌ VALIDACIÓN FALLÓ - FORMULARIO NO VÁLIDO");
                 return;
             }
+            
+            debugLog("✅ VALIDACIÓN EXITOSA - ENVIANDO DATOS...");
             
             const submitBtn = document.getElementById('submitBtn');
             const successMessage = document.getElementById('successMessage');
@@ -201,9 +232,13 @@
                 fuente: 'formulario_automatizacion'
             };
 
+            debugLog("📦 DATOS PREPARADOS: " + JSON.stringify(data));
+
             try {
-                // URL del webhook de n8n - REEMPLAZA CON TU URL REAL
+                // URL del webhook de n8n
                 const n8nWebhookUrl = 'https://pro-001-n8n.adnmou.easypanel.host/webhook-test/formulario-vuln';
+                
+                debugLog("🌐 ENVIANDO A: " + n8nWebhookUrl);
                       
                 const response = await fetch(n8nWebhookUrl, {
                     method: 'POST',
@@ -213,34 +248,42 @@
                     body: JSON.stringify(data)
                 });
 
+                debugLog("📡 RESPUESTA DEL SERVIDOR: " + response.status);
+                
                 if (response.ok) {
+                    debugLog("✅ ENVÍO EXITOSO");
                     successMessage.style.display = 'block';
                     document.getElementById('automationForm').reset();
                 } else {
-                    throw new Error(`Error: ${response.status}`);
+                    throw new Error(`Error HTTP: ${response.status}`);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                debugLog("❌ ERROR: " + error.message);
+                console.error('Error completo:', error);
                 errorMessage.style.display = 'block';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Enviar Solicitud';
+                debugLog("🔄 BOTÓN REHABILITADO");
             }
         });
 
-        // Función de validación simplificada
         function validateForm() {
             let isValid = true;
             
-            // Validar campos requeridos
+            debugLog("🔍 INICIANDO VALIDACIÓN...");
+            
             const requiredFields = ['nombre', 'email', 'cve', 'target_iac_file', 'nexus_url'];
             requiredFields.forEach(fieldId => {
                 const field = document.getElementById(fieldId);
                 const error = document.getElementById(fieldId + 'Error');
                 
+                debugLog(`Campo ${fieldId}: "${field.value}"`);
+                
                 if (!field.value.trim()) {
                     error.style.display = 'block';
                     isValid = false;
+                    debugLog(`❌ Campo ${fieldId} está vacío`);
                 } else {
                     error.style.display = 'none';
                 }
@@ -249,13 +292,17 @@
             // Validar que al menos una opción esté seleccionada
             const depOptions = document.querySelectorAll('input[name="dep_option"]:checked');
             const depOptionError = document.getElementById('depOptionError');
+            debugLog(`Opciones seleccionadas: ${depOptions.length}`);
+            
             if (depOptions.length === 0) {
                 depOptionError.style.display = 'block';
                 isValid = false;
+                debugLog("❌ No hay opciones seleccionadas");
             } else {
                 depOptionError.style.display = 'none';
             }
             
+            debugLog(`📊 RESULTADO VALIDACIÓN: ${isValid ? 'VÁLIDO' : 'INVÁLIDO'}`);
             return isValid;
         }
 
@@ -268,6 +315,8 @@
                 }
             });
         });
+
+        debugLog("✅ SCRIPT CARGADO CORRECTAMENTE");
     </script>
 </body>
 </html>
